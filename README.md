@@ -53,8 +53,6 @@ w przestrzeni nazw `jnp1` i nie był widoczny w globalnej przestrzeni nazw.
 Przykład użycia znajduje się w pliku `maptel_test2.c`c.
 
 ### kompilacja
-Kompilowanie przykładów:
-
 ```g++ -c -Wall -Wextra -O2 -std=c++17 maptel.cc -o maptel.o
 gcc -c -Wall -Wextra -O2 -std=c11 maptel_test1.c -o maptel_test1.o
 g++ -c -Wall -Wextra -O2 -std=c++17 maptel_test2.cc -o maptel_test2.o
@@ -102,8 +100,6 @@ powinien zawierać innych plików. **Nie wolno umieszczać w repozytorium plikó
 dużych, binarnych, tymczasowych (np. *.o) ani innych zbędnych.**
 
 ### kryteria oceny stylu
-=== Proponowane kryteria oceniania drugiego zadania ===
-
 == Cele dydaktyczne ==
 
 Studenci powinni:
