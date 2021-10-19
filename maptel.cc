@@ -28,29 +28,38 @@ using maptel_id_t = unsigned long;
 
 //pytanie: czy nazwa dicts jest dobra? (jeśli nie to trzeba też zmienić
 // powiązaną z nią nazwę zmiennej lokalnej w maptel_transform)
-unordered_map<maptel_id_t, unordered_map<string, string>> dicts;
+// static jest dlatego że extern "C" wywala namespace i funkcja byłaby widzoczna
+// w C. Jeżeli wywalimy extern "C" to można wywalić to static
+static unordered_map<maptel_id_t, unordered_map<string, string>> &dicts() {
+    static unordered_map<maptel_id_t, unordered_map<string, string>> d;
+    return d;
+};
 
 // Zakładamy, że poprawny telefon jest niepusty.
 // (chyba że pusty jest poprawny to wtedy powinno być \\d*)
-regex tel_nr("\\d+");
+// static jest j.w.
+static regex &tel_nr() {
+    static regex r("\\d+");
+    return r;
+}
 
 unsigned long maptel_create(void) {
     static maptel_id_t dict_idx = 0;
     static unordered_map<string, string> empty_map;
 
     // Wstawiamy pustą mapę, żeby zainicjalizować wartość pod kluczem dict_idx.
-    dicts[dict_idx] = empty_map;
+    dicts()[dict_idx] = empty_map;
 
     return dict_idx++;
 }
 
 void maptel_delete(maptel_id_t id) {
-    assert(dicts.count(id) != 0);
-    dicts.erase(id);
+    assert(dicts().count(id) != 0);
+    dicts().erase(id);
 }
 
 void maptel_insert(maptel_id_t id, char const *tel_src, char const *tel_dst) {
-    assert(dicts.count(id) != 0);
+    assert(dicts().count(id) != 0);
     assert(tel_src != nullptr);
     assert(tel_dst != nullptr);
     assert(strlen(tel_src) <= TEL_NUM_MAX_LEN);
@@ -58,28 +67,28 @@ void maptel_insert(maptel_id_t id, char const *tel_src, char const *tel_dst) {
 
     string src(tel_src), dst(tel_dst);
 
-    assert(regex_match(src, tel_nr));
-    assert(regex_match(dst, tel_nr));
+    assert(regex_match(src, tel_nr()));
+    assert(regex_match(dst, tel_nr()));
 
-    dicts[id][src] = dst;
+    dicts()[id][src] = dst;
 }
 
 void maptel_erase(maptel_id_t id, char const *tel_src) {
-    assert(dicts.count(id) != 0);
+    assert(dicts().count(id) != 0);
     assert(tel_src != nullptr);
     assert(strlen(tel_src) <= TEL_NUM_MAX_LEN);
 
     string src(tel_src);
 
-    assert(regex_match(src, tel_nr));
-    assert(dicts[id].count(src) != 0);
+    assert(regex_match(src, tel_nr()));
+    assert(dicts()[id].count(src) != 0);
 
-    dicts[id].erase(src);
+    dicts()[id].erase(src);
 }
 
 void maptel_transform(maptel_id_t id, char const *tel_src, char *tel_dst,
                       size_t len) {
-    assert(dicts.count(id) != 0);
+    assert(dicts().count(id) != 0);
     assert(tel_src != nullptr);
     assert(tel_dst != nullptr);
     assert(strlen(tel_src) <= TEL_NUM_MAX_LEN);
@@ -87,9 +96,9 @@ void maptel_transform(maptel_id_t id, char const *tel_src, char *tel_dst,
     unordered_set<string> cycle;
     string src(tel_src);
 
-    assert(regex_match(src, tel_nr));
+    assert(regex_match(src, tel_nr()));
 
-    auto dict = dicts[id];
+    auto dict = dicts()[id];
     unordered_map<string, string>::iterator it;
 
     //todo: zrobić tak żeby nie kopiować
