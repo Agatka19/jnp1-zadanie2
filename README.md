@@ -50,7 +50,7 @@ Ludzie bywają przewrotni i mając kod, który można używać w języku C, chc�
 używać w C++. Należy zapewnić możliwość użycia pliku nagłówkowego `maptel.h`
 w języku C++ w taki sposób, aby interfejs modułu maptel został umieszczony
 w przestrzeni nazw `jnp1` i nie był widoczny w globalnej przestrzeni nazw.
-Przykład użycia znajduje się w pliku `maptel_test2.c`c.
+Przykład użycia znajduje się w pliku `maptel_test2.cc`.
 
 ### kompilacja
 ```g++ -c -Wall -Wextra -O2 -std=c++17 maptel.cc -o maptel.o
