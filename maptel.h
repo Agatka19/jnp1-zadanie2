@@ -8,10 +8,12 @@
 #endif
 
 #ifdef __cplusplus
+extern "C" {
+
 namespace jnp1 {
 #endif
 
-extern const size_t TEL_NUM_MAX_LEN = 22;
+const size_t TEL_NUM_MAX_LEN = 22;
 
 // Tworzy słownik i zwraca liczbę naturalną będącą jego identyfikatorem.
 unsigned long maptel_create(void);
@@ -37,6 +39,8 @@ void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst,
 
 #ifdef __cplusplus
 } // namespace jnp1
+
+} // extern "C"
 #endif
 
 #endif //MAPTEL_H

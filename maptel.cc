@@ -4,8 +4,13 @@
 #include <unordered_set>
 #include <iostream>
 #include <cstring>
+#include <cassert>
 
 using namespace std;
+
+extern "C" {
+
+namespace jnp1 {
 
 #ifndef NDEBUG
 constexpr bool debug = false;
@@ -15,11 +20,11 @@ constexpr bool debug = true;
 
 using maptel_id_t = unsigned long;
 
-//todo: nazwac to lepiej
+//pytanie: czy nazwa dicts jest dobra?
 unordered_map<maptel_id_t, unordered_map<string, string>> dicts;
-maptel_id_t dict_idx = 0;
 
 unsigned long maptel_create(void) {
+    static maptel_id_t dict_idx = 0;
     return dict_idx++;
 }
 
@@ -30,6 +35,7 @@ void maptel_delete(maptel_id_t id) {
 void maptel_insert(maptel_id_t id, char const *tel_src, char const *tel_dst) {
     //todo: spr czy id istnieje w mapie
     //todo: spr czy długość nie przekracza limitu 22
+    assert(strlen(tel_src) <= TEL_NUM_MAX_LEN);
     string src(tel_src), dst(tel_dst);
     dicts[id][src] = dst;
 }
@@ -68,3 +74,7 @@ void maptel_transform(maptel_id_t id, char const *tel_src, char *tel_dst,
         strcpy(tel_dst, &dst[0]);
     }
 }
+
+} // namespace jnp1
+
+} // extern "C"
