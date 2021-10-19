@@ -1,3 +1,5 @@
+_moje uwagi/przemyślenia dotyczące treści będę pisał kursywą_
+
 ## treść zadania
 Biblioteka standardowa języka C++ udostępnia bardzo przydatny typ
 `unordered_map`. Jest to typ generyczny, pozwalający tworzyć słowniki
@@ -67,12 +69,14 @@ funkcji za pomocą asercji i wypisywać na standardowy strumień błędów infor
 diagnostyczne. Należy sprawdzać przynajmniej, czy identyfikator słownika jest
 poprawny, czy przekazany wskaźnik nie jest NULL-em, czy przekazany napis nie
 jest za długi, czy zawiera poprawne znaki i czy kończy się znakiem o wartości
-zero. Kompilowanie z parametrem `-DNDEBUG` powinno wyłączać sprawdzanie
+zero.<sup>[1]</sup> Kompilowanie z parametrem `-DNDEBUG` powinno wyłączać sprawdzanie
 i wypisywanie.**
 
 Przykłady informacji diagnostycznych wypisywanych przez programy `maptel_test1`,
 `maptel_test21` i `maptel_test22` znajdują się odpowiednio w plikach
 `maptel_test1.err` i `maptel_test2.err`.
+
+<sup>[1]</sup> _Moim zdaniem sprawdzanie tego jest bez sensu, bo każdy ciąg znaków w C powinien kończyć się `\0`, a jak się nie kończy to jest to nie do wykrycia, bo jak dostajemy wskaźnik jako argument, bez informacji o długości zaalokowanej pamięci to możemy się tylko przejść po tej pamięci do `\0`, a jak go nie ma to wyjdziemy poza pamięć i się program wywali i to dotyczy też funkcji `srtlen(...)` i próby wypisania `printf("%s", ...)`, a jak `strlen` zwróci długość to znaczy, że doszedł do `\0`, więc jest dobrze._
 
 ### inne
 Oczekiwane rozwiązanie powinno korzystać z kontenerów i funkcji udostępnianych
